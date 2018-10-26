@@ -169,17 +169,6 @@ public class ForegroundService extends Service {
      * @param settings The config settings
      */
     private Notification makeNotification(JSONObject settings) {
-        return makeNotification(settings, false);
-    }
-
-    /**
-     * Create a notification as the visible part to be able to put the service
-     * in a foreground state.
-     *
-     * @param settings The config settings
-     * @param isUpdate Whether the notifaction is being updated or not
-     */
-    private Notification makeNotification(JSONObject settings, boolean isUpdate) {
         // Android 8.0 notification fix.
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(
@@ -201,10 +190,7 @@ public class ForegroundService extends Service {
         Intent intent   = context.getPackageManager()
                 .getLaunchIntentForPackage(pkgName);
 
-        if (!isUpdate || notification == null) {
-            notification = new Notification.Builder(context)
-                                           .setOngoing(true);
-        }
+        Notification.Builder notification = new Notification.Builder(context);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notification.setChannelId(NOTIFICATION_CHANNEL_ID)
@@ -253,7 +239,7 @@ public class ForegroundService extends Service {
             return;
         }
 
-        Notification notification = makeNotification(settings, true);
+        Notification notification = makeNotification(settings);
         getNotificationManager().notify(NOTIFICATION_ID, notification);
     }
 
