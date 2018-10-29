@@ -226,7 +226,7 @@ public class ForegroundService extends Service {
         }
 
         Notification n = notification.build();
-        n.flags = Notification.FLAG_ONGOIN_EVENT;
+        n.flags = Notification.FLAG_ONGOING_EVENT;
 
         return n;
     }
