@@ -174,7 +174,7 @@ public class ForegroundService extends Service {
             NotificationChannel notificationChannel = new NotificationChannel(
                 NOTIFICATION_CHANNEL_ID,
                 NOTIFICATION_CHANNEL_NAME,
-                getNotificationManager().IMPORTANCE_HIGH
+                getNotificationManager().IMPORTANCE_LOW
             );
 
             notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
@@ -190,7 +190,9 @@ public class ForegroundService extends Service {
         Intent intent   = context.getPackageManager()
                 .getLaunchIntentForPackage(pkgName);
 
-        Notification.Builder notification = new Notification.Builder(context);
+        if(notification == null) {
+            notification = new Notification.Builder(context);
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notification.setChannelId(NOTIFICATION_CHANNEL_ID)
@@ -223,7 +225,10 @@ public class ForegroundService extends Service {
             notification.setContentIntent(contentIntent);
         }
 
-        return notification.build();
+        Notification n = notification.build();
+        n.flags = Notification.FLAG_ONGOIN_EVENT;
+
+        return n;
     }
 
     /**
